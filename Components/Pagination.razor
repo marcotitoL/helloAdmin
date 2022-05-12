@@ -1,0 +1,28 @@
+@code{
+    [Parameter]
+    public string? PaginationUrl {get;set;} 
+
+    [Parameter]
+    public int TotalPagedItems {get;set;}
+    [Parameter]
+    public string? CurrentPage {get;set;}
+
+    [Parameter]
+    public int ItemsPerPage {get;set;}
+}
+
+<nav>
+    <ul class="pagination">
+       <li class="page-item @( CurrentPage == "1" || String.IsNullOrEmpty(CurrentPage)  ? "disabled" : "" )">
+             <a class="page-link" href="@( PaginationUrl + "" + ( Convert.ToInt32( String.IsNullOrEmpty(CurrentPage) ? "1" : CurrentPage )-1 ) )">Prev</a> 
+        </li> 
+        @for (int i = 1; i <= Math.Ceiling((decimal)TotalPagedItems/ItemsPerPage); i++){
+            <li class="page-item @( Convert.ToString(i) == CurrentPage || ( CurrentPage?.ToString() == "" && i == 1 )  ? "active" : "" )">
+            <a class="page-link" href="@(PaginationUrl+""+i)">@i</a>
+        </li>
+        }
+        <li class="page-item @( CurrentPage == Math.Ceiling((decimal)TotalPagedItems/ItemsPerPage).ToString() ? "disabled" : "" )">
+            <a class="page-link" href="@( PaginationUrl + "" + ( String.IsNullOrEmpty(CurrentPage) ? "2" : Convert.ToInt32(CurrentPage)+1 ) )">Next</a>
+        </li>
+    </ul>
+</nav>

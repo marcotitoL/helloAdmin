@@ -1,0 +1,87 @@
+@page
+@model ProductsPage
+
+@section Scripts{
+    <script type="text/javascript">
+        function deleteProduct( productId ){
+            jQuery.get("?handler=delete", {productId: productId},function(json){
+                if( "error" in json){
+
+                }
+                else{
+                    jQuery("#" + productId ).hide("slow");
+                }
+            });
+        }
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="animated fadeIn">
+    <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Products
+                    </div>
+                    <div class="card-body overflow-auto">
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Seller</th>
+                                    <th>Added</th>
+                                    <th>Status</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            @foreach (var product in Model.products)
+                            {
+                                <tr id="@product.Id">
+                                    <td>@product.Id</td>
+                                    <td>@product.name</td>
+                                    <td>@product.description</td>
+                                    <td>@product.qty</td>
+                                    <td>@product.price</td>
+                                    <td>@product.category.categoryName</td>
+                                    <td>
+                                        @product.seller.firstname @product.seller.lastname
+                                        <span class="small">@product.seller.email</span>
+                                    <td>@product.Added</td>
+                                    <td>@product.Status</td>
+                                    <td>
+                                        <a class="fa fa-icon fa-trash-o fa-lg text-danger" href="javascript: if( confirm('Are you sure to delete this?') ){ deleteProduct('@product.Id'); }"></a>
+                                        <a class="fa fa-icon fa-pencil fa-lg text-primary" href="products/update/@product.Id"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        <component type="typeof(helloWebApp.Components.Pagination)" param-PaginationUrl="@( "/products?page=" )" param-ItemsPerPage="@Model.productPerPage" param-CurrentPage="@Request.Query["page"].ToString()" param-TotalPagedItems="@Model.productCount" render-mode="Static" />
+                        @*
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item @( Request.Query["page"] == "1" || String.IsNullOrEmpty(Request.Query["page"])  ? "disabled" : "" )">
+                                    <a class="page-link" href="/products?page=@(Convert.ToInt32(Request.Query["page"])-1)">Prev</a>
+                                </li>
+                                @for (int i = 1; i <= Math.Ceiling((decimal)Model.productCount/5); i++){
+                                    <li class="page-item @( Convert.ToString(i) == Request.Query["page"] || ( Request.Query["page"].ToString() == "" && i == 1 )  ? "active" : "" )">
+                                    <a class="page-link" href="/products?page=@i">@i</a>
+                                </li>
+                                }
+                                <li class="page-item @( Request.Query["page"] == Math.Ceiling((decimal)Model.productCount/5).ToString() ? "disabled" : "" )">
+                                    <a class="page-link" href="/products?page=@( String.IsNullOrEmpty(Request.Query["page"]) ? "2" : Convert.ToInt32(Request.Query["page"])+1)">Next</a>
+                                </li>
+                            </ul>
+                        </nav> *@
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-->
+        </div>
+    </div>
+</div>

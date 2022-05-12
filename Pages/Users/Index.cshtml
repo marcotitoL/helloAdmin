@@ -1,0 +1,77 @@
+@page
+@model usersPage
+
+@section Scripts{
+<script type="text/javascript">
+        function deleteUser( userId ){
+            jQuery.get("?handler=delete", {userId: userId},function(json){
+                if( "error" in json){
+
+                }
+                else{
+                    jQuery("#" + userId ).hide("slow");
+                }
+            });
+        }
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="animated fadeIn">
+    <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Users
+                    </div>
+                    <div class="card-body overflow-auto">
+                        <table class="table table-responsive-sm table-bordered table-striped table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Pic</th>
+                                    <th>Email</th>
+                                    <th>Firstname</th>
+                                    <th>Lastname</th>
+                                    <th>Birthdate</th>
+                                    <th>Balance</th>
+                                    <th>Phonenumber</th>
+                                    <th><i class="fa fa-mobile"></i></th>
+                                    <th><i class="fa fa-envelope"></i></th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            @foreach (var user in Model.users)
+                            {
+                                <tr id="@user.id">
+                                    <td>@user.id</td>
+                                    <td>
+                                        @if(  !String.IsNullOrEmpty(user.profileImage) ){
+                                            <img style="height:35px;width:35px;object-fit: cover;" class="rounded-circle" src="@user.profileImage" >
+                                    }
+                                    </td>
+                                    <td>@user.email</td>
+                                    <td>@user.firstname</td>
+                                    <td>@user.lastname</td>
+                                    <td>@user.birthdate.ToShortDateString()</td>
+                                    <td class="text-right">@user.balance</td>
+                                    <td>@user.phonenumber</td>
+                                    <td>@( Html.Raw(user.phonenumberConfirmed ? "<i class=\"fa fa-check text-success\"></i>" : "<i class=\"fa fa-times text-danger\"></i>" ))</td>
+                                    <td>@( Html.Raw(user.emailConfirmed ? "<i class=\"fa fa-check text-success\"></i>" : "<i class=\"fa fa-times text-danger\"></i>" ) )</td>
+                                    <td>
+                                        <a class="fa fa-icon fa-trash-o fa-lg text-danger" href="javascript: if( confirm('Are you sure to delete this?') ){ deleteUser('@user.id'); }"></a>
+                                        @* <a class="fa fa-icon fa-pencil fa-lg text-primary" href="users/update/@user.id"></a> *@
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        
+                       <component type="typeof(helloWebApp.Components.Pagination)" param-PaginationUrl="@( "/users?page=" )" param-ItemsPerPage="@Model.perPage" param-CurrentPage="@Request.Query["page"].ToString()" param-TotalPagedItems="@Model.count" render-mode="Static" />
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-->
+        </div>
+    </div>
+</div>
+

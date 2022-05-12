@@ -1,0 +1,196 @@
+@page
+@model accountPage
+@inject IAntiforgery antiforgery
+@{
+    ViewData["Title"] = "Account";
+    var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery("#btnSave").click(function(){
+            jQuery("#btnSave").prepend('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+            var firstname = jQuery("#txtFirstname").val();
+            var lastname = jQuery("#txtLastname").val();
+            var birthdate = jQuery("#txtBirthdate").val();
+
+            var formData = new FormData();
+            formData.append("__RequestVerificationToken", "@token" );
+            formData.append("userId", "@Model.user.id" );
+            formData.append("firstname", firstname );
+            formData.append("lastname", lastname );
+            formData.append("birthdate", birthdate );
+            formData.append('profilePicture', jQuery('#fileAccountPicture')[0].files[0] );
+            jQuery.ajax({
+                url: "/account?handler=save",
+                data: formData,
+                type: "POST",
+                contentType: false,
+                processData: false
+            }).done(function(json){
+                 console.log(json);
+                 if( "error" in json ){
+                    
+                }
+                else{
+                    //location.href = "/categories?created";
+                    jQuery("#btnSave span").remove();
+                    jQuery("#alertUpdateSuccess").removeClass("d-none");
+                    setTimeout(()=>jQuery("#alertUpdateSuccess").addClass("d-none"),5000);
+
+                    if( json.picture != "" ){
+                        jQuery("#navAccountPicture").attr("src", json.picture );
+                    }
+                }
+            });
+            
+            /*jQuery.post("/account?handler=save", {
+                userId: "@Model.user.id",
+                firstname:firstname,
+                lastname:lastname,
+                birthdate:birthdate,
+                __RequestVerificationToken: '@token'
+
+            }, function(json){
+                if( "error" in json ){
+                    
+                }
+                else{
+                    //location.href = "/categories?created";
+                    jQuery("#btnSave span").remove();
+                    jQuery("#alertUpdateSuccess").removeClass("d-none");
+                    setTimeout(()=>jQuery("#alertUpdateSuccess").addClass("d-none"),5000);
+                }
+            }); */
+        });
+
+        var imageUploadBuffer = null;
+    function readURL(input, targetImage ) {
+        console.log(input);
+        //jQuery('img.loading').removeClass('hidden');
+        //jQuery('img#pictureUrl').addClass('hidden');
+      if (input.files && input.files[0]) {
+
+        var reader = new FileReader();
+
+        console.log("B");
+        
+        reader.onload = function(e) {
+          
+          imageUploadBuffer = e.target.result;
+
+          targetImage.attr("src", imageUploadBuffer );
+
+          console.log( imageUploadBuffer );
+          
+          //try to upload to server
+          /*var formData = new FormData();
+          formData.append('action', 'updateProfileInfo' );
+          formData.append('avatar', jQuery('input[name=pictureUrl]')[0].files[0] );
+          jQuery.ajax({
+              url:null,
+              data:formData,
+              type:'POST',
+              contentType: false,
+              processData: false
+          }).done(function() {
+                jQuery('#pictureUrl').attr('src', imageUploadBuffer );
+                
+                jQuery('img.loading').addClass('hidden');  
+                jQuery('img#pictureUrl').removeClass('hidden');    
+            });*/
+          
+        }
+        
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+      }
+    }
+
+    jQuery("#imgAccountPicture").click(function(){
+        jQuery("#fileAccountPicture").trigger("click");
+    });
+
+    jQuery("#fileAccountPicture").change(function(){
+        readURL(jQuery(this)[0],jQuery("#imgAccountPicture"));
+    });
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="alertUpdateSuccess" class="alert alert-success d-none" role="alert">Successfully updated your account!</div>
+                <div class="card">
+                    <div class="card-body">
+                        <h1>Account</h1>
+                        <p class="text-muted">Account details</p>
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label">Id</label>
+                            <div class="col-md-7">
+                                <p class="form-control-static">@Model.user.id</p>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-7">
+                                <p class="form-control-static">@Model.user.email</p>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label">Role</label>
+                            <div class="col-md-7">
+                                <p class="form-control-static">@Model.user.roles</p>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label">Account Picture</label>
+                            <div class="col-md-9">
+                                <img id="imgAccountPicture" style="width:100px;height:100px;border-radius:50%;object-fit: cover;" class="" src="@Model.user.profileImage" />
+                                <input class="d-none" id="fileAccountPicture" type="file" name="file-input">
+                                <br class="clearfix" />
+                                <span class="text-muted small">click to change</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label">Firstname</label>
+                            <div class="col-md-9">
+                                <input value="@Model.user.firstname" class="form-control" id="txtFirstname" type="text" placeholder="Firstname">
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label">Lastname</label>
+                            <div class="col-md-9">
+                                <input value="@Model.user.lastname" class="form-control" id="txtLastname" type="text" placeholder="Lastname">
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label class="col-md-3 col-form-label" for="txtBirthdate">Birhtdate</label>
+                            <div class="col-md-9">
+                                <input value="@Model.user.birthdate.ToString("yyyy-MM-dd")" class="form-control" id="txtBirthdate" type="date" name="date-input" placeholder="date">
+                                <!-- <span class="help-block">Please enter a valid date</span> -->
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-6"><button id="btnSave" class="btn btn-primary btn-pill" type="button">Update Account</button></div>
+                            <div class="col-6 text-right">
+                                <button id="btnSave" class="btn btn-warning btn-pill text-white" type="button">
+                                    <i class="fa fa-lock"></i>
+                                    Change Password</button>
+                                </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
