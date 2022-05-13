@@ -1,11 +1,90 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Blank Page";
+    ViewData["Title"] = "Dashboard";
 }
 
 <div class="container-fluid">
     <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body pb-4">
+                        <i class="fa fa-shopping-bag fa-lg float-right p-1"></i>
+                        <!-- <div class="btn-group float-right">
+                            <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div> 
+                        </div>-->
+                        <div class="text-value">@Model.noOfProducts</div>
+                        <div>Products</div>
+                    </div>
+                    <!-- <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                        <canvas class="chart" id="card-chart5" height="70"></canvas>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body pb-4">
+                        <i class="fa fa-shopping-basket fa-lg float-right p-1"></i>
+                        <!-- <div class="btn-group float-right">
+                            <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div> 
+                        </div>-->
+                        <div class="text-value">@Model.noOfCategories</div>
+                        <div>Categories</div>
+                    </div>
+                    <!-- <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                        <canvas class="chart" id="card-chart5" height="70"></canvas>
+                    </div> -->
+                </div>
+            </div>
 
+            <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body pb-4">
+                        <i class="fa fa-users fa-lg float-right p-1"></i>
+                        <!-- <div class="btn-group float-right">
+                            <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div> 
+                        </div>-->
+                        <div class="text-value">@Model.noOfUsers</div>
+                        <div>Users</div>
+                    </div>
+                    <!-- <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                        <canvas class="chart" id="card-chart5" height="70"></canvas>
+                    </div> -->
+                </div>
+            </div>
+
+        </div>
+        <!-- /.row-->
+        
+        
+        <!-- /.row-->
     </div>
 </div>
+
+@section Scripts {
+    <!--<script src="~/lib/chart.js/dist/Chart.min.js"></script>
+    <script src="~/lib/coreui/js/custom-tooltips.min.js"></script>
+    <script src="~/lib/coreui/js/main.js"></script> -->
+}
