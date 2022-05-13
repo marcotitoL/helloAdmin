@@ -4,6 +4,8 @@
 @{
     ViewData["Title"] = "Categories";
     var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+
+    ViewData["Breadcrumbs"] = "Categories/Add New";
 }
 
 @section Scripts{

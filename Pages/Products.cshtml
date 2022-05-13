@@ -1,6 +1,11 @@
 @page
 @model ProductsPage
 
+@{
+    ViewData["Title"] = "Products - View All";
+    ViewData["Breadcrumbs"] = "Products/View All";
+}
+
 @section Scripts{
     <script type="text/javascript">
         function deleteProduct( productId ){

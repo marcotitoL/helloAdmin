@@ -17,7 +17,6 @@ public class accountPage : PageModel{
         response = await _httpClient.GetAsync($"users/{_httpContext.Request.Cookies["__userId"]}");
         user = response.Content.ReadFromJsonAsync<responseUser>().Result!;
 
-
         return Page();
     } 
 

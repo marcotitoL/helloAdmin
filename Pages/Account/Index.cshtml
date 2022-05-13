@@ -4,6 +4,8 @@
 @{
     ViewData["Title"] = "Account";
     var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+
+    ViewData["Breadcrumbs"] = "Account Details";
 }
 
 @section Scripts{

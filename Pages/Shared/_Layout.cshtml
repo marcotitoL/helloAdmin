@@ -60,8 +60,15 @@
 
             <!-- Breadcrumb-->
             <ol class="breadcrumb">
+                @{
+                    List<string> Breadcrumbs = String.IsNullOrEmpty(ViewData["Breadcrumbs"]?.ToString()) ? new List<string>(){} :  ViewData["Breadcrumbs"]?.ToString()?.Split("/").ToList<string>()!;
+                }
                 <li class="breadcrumb-item">Admin</li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                @foreach (var breadcrumb in Breadcrumbs)
+                {
+                    <li class="breadcrumb-item active">@breadcrumb</li>    
+                }
+                
                 <!-- Breadcrumb Menu-->
                 <!-- <li class="breadcrumb-menu d-md-down-none">
                     <div class="btn-group" role="group" aria-label="Button group">

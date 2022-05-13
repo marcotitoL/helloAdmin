@@ -25,7 +25,6 @@ public class IndexModel : PageModel{
 
         noOfCategories = Convert.ToInt32( response.Content.ReadAsStringAsync().Result );
 
-
         return Page();
     }
 }

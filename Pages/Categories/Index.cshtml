@@ -1,6 +1,10 @@
 @page
 @model categoriesPage
 
+@{
+    ViewData["Breadcrumbs"] = "Categories/View All";
+}
+
 @section Scripts{
     <script type="text/javascript">
         function deleteCategory( categoryId ){

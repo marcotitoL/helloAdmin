@@ -1,6 +1,10 @@
 @page
 @model usersPage
 
+@{
+    ViewData["Breadcrumbs"] = "Users/View All";
+}
+
 @section Scripts{
 <script type="text/javascript">
         function deleteUser( userId ){

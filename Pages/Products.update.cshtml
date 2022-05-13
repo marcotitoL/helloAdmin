@@ -4,6 +4,8 @@
 @{
      ViewData["Title"] = "Update Product";
      var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+
+     ViewData["Breadcrumbs"] = "Products/Update";
 }
 
 @section Scripts{
