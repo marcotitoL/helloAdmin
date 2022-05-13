@@ -21,7 +21,7 @@
             <a class="page-link" href="@(PaginationUrl+""+i)">@i</a>
         </li>
         }
-        <li class="page-item @( CurrentPage == Math.Ceiling((decimal)TotalPagedItems/ItemsPerPage).ToString() ? "disabled" : "" )">
+        <li class="page-item @( ( String.IsNullOrEmpty(CurrentPage) && Math.Ceiling((decimal)TotalPagedItems/ItemsPerPage).ToString() == "1" ) || CurrentPage == Math.Ceiling((decimal)TotalPagedItems/ItemsPerPage).ToString() ? "disabled" : "" )">
             <a class="page-link" href="@( PaginationUrl + "" + ( String.IsNullOrEmpty(CurrentPage) ? "2" : Convert.ToInt32(CurrentPage)+1 ) )">Next</a>
         </li>
     </ul>
